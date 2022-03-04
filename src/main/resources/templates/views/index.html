@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-6">List employee</h1>
+        </div>
+        <div class="col">
+            <a href="/employee/createEmployee" class="btn btn-primary btn-lg " tabindex="-1" role="button"
+               aria-disabled="true">Create
+                Employee</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-sm" style="width: 70%">
+        <thead>
+        <tr>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Post</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.firstName}"></td>
+            <td th:text="${employee.secondName}"></td>
+            <td th:text="${employee.post.name}"></td>
+            <td>
+                <form action="#">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#editEmployee">
+                        edit
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- modal -->
+    <div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/edit/${employeeId}}" th:object="${form}" method="post">
+                        <div class="mb-3">
+                            <label for="firstName" class="col-form-label">first name:</label>
+                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" th:value="${firstName}">
+                            <label for="secondName" class="col-form-label">second name:</label>
+                            <input type="text" class="form-control" id="secondName" th:field="*{secondName}" th:value="${secondName}">
+                            <label> select</label>
+                            <select class="form-select" id="validationCustom04" required th:field="*{postId}">
+                                <option th:each="post:${posts}" th:text="${post.name}" th:value="${post.id}" th:selected="${post.id==postId}"></option>
+                            </select>
+                            <input type="submit" data-bs-dismiss="modal">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
